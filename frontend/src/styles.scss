@@ -1,0 +1,14 @@
+@import './app/style/extra';
+
+html {
+    background-color: $darkblue;
+}
+
+@font-face {
+    font-family: Lato;
+    src: url("./assets/fonts/Lato/Lato-Bold.ttf");
+}
+
+body {
+    font-family: Lato;
+}

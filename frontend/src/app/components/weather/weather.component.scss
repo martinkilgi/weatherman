@@ -1,0 +1,278 @@
+@import "../../style/extra";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.weatherform {
+    display: flex;
+    flex-direction: row;
+    background-color: $lightblue;
+    border-style: solid;
+    border-width: 2px;
+    border-color: $sand;
+    border-radius: 0.5em;
+    width: 80%;
+    justify-content: center;
+
+    button {
+        background-color: $darkblue;
+        border: 2px solid $sand;
+        border-radius: 1em;
+        color: $sand;
+        padding: 1em;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        font-size: large;
+        font-weight: 800;
+        cursor: pointer;
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: row;
+    margin: 0 2em 2em 2em;
+    width: 90%;
+
+    input, select {
+        display: block;
+        text-align: center;
+        border: 2px solid $darkblue;
+        border-radius: 1em;
+        background-color: lightgray;
+
+        &:focus {
+            background-color: lightblue;
+            outline: none;
+            box-shadow: 0 0 10px #9ecaed;
+        }
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        color: $sand;
+        margin-right: 1.5em;
+    }
+
+}
+
+.input-labels {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    justify-content: space-between;
+    margin-top: 2em;
+
+    label {
+        width: 60%;
+        height: 2em;
+        text-align: center;
+        color: $sand;
+    }
+
+}
+
+.days {
+
+    text-align: center;
+
+    label {
+        align-items: center;
+        color: $sand;
+        margin-right: 1.5em;
+    }
+
+    select {
+        width: 6em;
+        height: 2em;
+        background-color: lightgray;
+        border: 2px solid $darkblue;
+        border-radius: 1em;
+        text-align: center;
+
+    }
+
+}
+
+.labels {
+    display: block;
+
+}
+
+.logo {
+    display: block;
+    padding: 1em;
+}
+
+input {
+  width: 60%;
+  padding: 12px 20px;
+  margin: 1em 4em;
+  //margin-right: 6em;
+  display: block;
+}
+
+.button {
+    margin: 1em;
+    text-align: center;
+}
+
+.table-container {
+    display: table;
+    background-color: $lightblue;
+    text-align:center;
+	overflow: hidden;
+	width: 80%;
+	margin-top: 4em;
+    padding: 1em;
+    border-style: solid;
+    border-width: 4px;
+    border-color: $sand;
+    border-radius: 0.5em;
+
+    div {
+        width: 100%;
+        vertical-align: inherit;
+        border-color: inherit;
+        
+    }
+
+    th {
+
+        background-color: $darkblue;
+
+        h1 {
+            font-weight: bold;
+	        font-size: 1.2em;
+            text-align: center;
+            color: $sand;
+        }
+    }
+
+    td {
+        font-size: 1em;
+    }
+
+    td, th {
+        padding: 1em;
+    }
+
+    tr {
+
+        &:nth-child(3n + 0) {
+            background-color: aliceblue;
+        }
+
+        &:nth-child(3n + 1) {
+            background-color: $ligthestblue;
+        }
+
+        &:nth-child(3n + 2) {
+            background-color: $sand;
+        }
+    }
+}
+
+.map {
+    display: block;
+    width: 80%;
+    height: 20em;
+}
+
+.instructions {
+    h2 {
+        color: $sand;
+    }
+}
+
+.colors {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    width: 60%;
+
+    .accuweather {
+        width: 7em;
+        height: 1.5em;
+        margin-bottom: 1em;
+        background-color: $ligthestblue;
+        border-radius: 0.5em;
+        text-align: center;
+    }
+
+    .openweather {
+        width: 7em;
+        height: 1.5em;
+        margin-bottom: 1em;
+        background-color: $sand;
+        border-radius: 0.5em;
+        text-align: center;
+    }
+
+    .weatherapi {
+        width: 7em;
+        height: 1.5em;
+        margin-bottom: 1em;
+        background-color: aliceblue;
+        border-radius: 0.5em;
+        text-align: center;
+    }
+}
+
+// .table-container {
+// 	margin-right:auto;
+// 	margin-left:auto;
+// 	display:flex;
+// 	justify-content:center;
+// 	align-items:center;
+// 	min-height:100vh;
+//     width: 80%;
+// }
+
+// .table {
+//     width:100%;
+// 	border:1px solid $sand;
+// }
+
+// .table-headers {
+//     display: flex;
+//     justify-content: space-between;
+//     width: 100%;
+//     background-color: $ligthestblue;
+// }
+
+// .row-data, .header-object {
+// 	flex: 1 1 20%;
+// 	text-align:center;
+//     padding: 1em;
+// }
+
+// .row {
+//     display: flex;
+//     justify-content: space-between;
+
+//     &:nth-child(3n + 0) {
+// 		background: green;
+// 	}
+
+//     &:nth-child(3n + 1) {
+// 		background: $lightblue;
+// 	}
+
+//     &:nth-child(3n + 2) {
+// 		background: $sand;
+// 	}
+// }

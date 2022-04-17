@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="logo">
+        <img src="../../../assets/logos/Weatherman.png" height="300" width="300" alt="brand logo">
+    </div>
+
+    <div class="instructions">
+        <h2>Please insert latitude and longitude or choose a destination from a map to request forecast data!</h2>
+    </div>
+
+    <div class="weatherform">
+        <form [formGroup]="weatherForm" (ngSubmit)="onFormSubmit()">
+                <div class="input-labels">
+                    <label>Latitude</label>
+                    <label>Longitude</label>
+                </div>
+                <div class="inputs">
+                    <!-- <label>Latitude</label> -->
+                    <input name="latitude" required formControlName="latitude" style="float:left">
+                    <!-- <label>Longitude</label> -->
+                    <input name="longitude" required formControlName="longitude" style="float:right">
+                </div>
+                <div class="days">
+                    <label>Days</label>
+                    <select required="true" name="days" id="days" formControlName="days">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    
+                </div>
+                <div class="submit">
+                    <button class="button" type="submit">Request data</button>
+                </div>
+        </form>
+    </div>
+
+    <div class="map">
+        <app-map (coordinates)="setCoordinates($event)"></app-map>
+    </div>
+
+    <div *ngIf="this.wthData.date.length" class="colors">
+        <span class="accuweather">AccuWeather</span>
+        <div class="openweather">OpenWeather</div>
+        <div class="weatherapi">WeatherApi</div>
+    </div>
+
+    <table *ngIf="this.wthData.date.length" class="table-container">
+        <thead>
+            <tr>
+                <th>
+                    <h1>Date</h1>
+                </th>
+                <th>
+                    <h1>Temperature</h1>
+                </th>
+                <th>
+                    <h1>Precipitation probability</h1>
+                </th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let weather of htmlWeather; let i = index">
+            <tr>
+                <th rowspan="3">{{weather.date}}</th>
+                <td>{{weather.accuData.temp}} °C</td>
+                <td>{{weather.accuData.prec}}%</td>
+            </tr>
+            <tr>
+                <td>{{weather.openWthData.temp}} °C</td>
+                <td>{{weather.openWthData.prec}}%</td>
+            </tr>
+            <tr>
+                <td>{{weather.wthApiData.temp}} °C</td>
+                <td>{{weather.wthApiData.prec}}%</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
