@@ -22,9 +22,9 @@ After I got ready with that, I just started to add other needed parts like a map
 Finally I just tested that the whole created system was working as expected and did some little finishing touches.
 
 Below is a list of activites with rough time estimates
-  -- Design 4h
-  -- Front-end functionality 5h
-  -- Back-end functionality 3h
+  * Design 4h
+  * Front-end functionality 5h
+  * Back-end functionality 3h
 
 ## Implement/Skip
 
