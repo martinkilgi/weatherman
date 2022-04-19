@@ -9,7 +9,7 @@ You will need:
 
 
 1. Clone it from the Github by copying the cloning link and entering it into command line with command 'git clone *link*'.
-2. Navigate to the 'frontend' from the command line and enter 'npm install'.
+2. Navigate to the 'frontend' from the command line and enter ```'npm install'```.
 
 ## Task solving and time consumption
 
