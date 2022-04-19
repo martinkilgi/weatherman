@@ -14,6 +14,13 @@ export class WeatherDataService {
     private http: HttpClient,
   ) { }
 
+  saveWeatherData(weatherData: any): Observable<any> {
+    const url = "http://localhost:8080/api/weather/save";
+    const data = this.http.post<any>(url, weatherData);
+
+    return data;
+  }
+
   getMeteorologiskData(lat: number, lon: number): Observable<any> {
     //const url = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=" + lat + "&lon=" + lon;
     const url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&appid=0827dbe14786d005d4c920ab375b9306"

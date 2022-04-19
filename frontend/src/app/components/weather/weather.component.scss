@@ -185,7 +185,8 @@ input {
 }
 
 .map {
-    display: block;
+    display: flex;
+    position: relative;
     width: 80%;
     height: 20em;
 }

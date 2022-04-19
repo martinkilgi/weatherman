@@ -20,4 +20,28 @@ public class WeatherServiceImpl implements WeatherService {
     public List<Weather> getData() {
         return weatherRepository.findAll();
     }
+
+    @Override
+    public List<Weather> saveWeatherData(List<Weather> weatherDataList) {
+        Integer arrLength = weatherDataList.size();
+        Weather weatherObject = null;
+        for (int i = 0; i < arrLength; i++) {
+            weatherObject = null;
+            log.info("Saving weather data with date {} to db", weatherDataList.get(0).getDate());
+            Weather currObj = weatherDataList.get(i);
+            weatherObject.setDate(currObj.getDate());
+            weatherObject.setAccuTemp(currObj.getAccuTemp());
+            weatherObject.setAccuPrec(currObj.getAccuPrec());
+            weatherObject.setOpenWthTemp(currObj.getOpenWthTemp());
+            weatherObject.setOpenWthPrec(currObj.getOpenWthPrec());
+            weatherObject.setWthApiTemp(currObj.getWthApiTemp());
+            weatherObject.setWthApiPrec(currObj.getWthApiPrec());
+
+            weatherRepository.save(weatherObject);
+        }
+
+        return weatherDataList;
+    }
+
+
 }

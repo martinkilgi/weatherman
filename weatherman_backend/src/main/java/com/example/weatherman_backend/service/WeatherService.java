@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface WeatherService {
     List<Weather> getData();
+    List<Weather> saveWeatherData(List<Weather> weather);
 }

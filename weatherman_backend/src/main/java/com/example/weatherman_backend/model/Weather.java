@@ -21,7 +21,14 @@ public class Weather {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private Float temperature;
-    private Float precipitation;
+    private String date;
+
+    private Float accuTemp;
+    private Float accuPrec;
+    private Float openWthTemp;
+    private Float openWthPrec;
+    private Float wthApiTemp;
+    private Float wthApiPrec;
+
 
 }

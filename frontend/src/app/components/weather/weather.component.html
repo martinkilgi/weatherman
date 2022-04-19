@@ -1,6 +1,6 @@
 <div class="container">
     <div class="logo">
-        <img src="../../../assets/logos/Weatherman.png" height="300" width="300" alt="brand logo">
+        <img src="../../../assets/logos/Weatherman.png" height="200" width="200" alt="brand logo">
     </div>
 
     <div class="instructions">
@@ -38,13 +38,13 @@
         <app-map (coordinates)="setCoordinates($event)"></app-map>
     </div>
 
-    <div *ngIf="this.wthData.date.length" class="colors">
+    <div *ngIf="this.weatherDataList.date.length" class="colors">
         <span class="accuweather">AccuWeather</span>
         <div class="openweather">OpenWeather</div>
         <div class="weatherapi">WeatherApi</div>
     </div>
 
-    <table *ngIf="this.wthData.date.length" class="table-container">
+    <table *ngIf="this.weatherDataList.date.length" class="table-container">
         <thead>
             <tr>
                 <th>
@@ -74,5 +74,7 @@
             </tr>
         </tbody>
     </table>
+
+    <button class="button" type="button" (click)="handleSave">Save weather data</button>
 </div>
 
