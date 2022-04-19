@@ -4,6 +4,13 @@
 
 ## Setup instructions
 
+You will need:
+  * PostgreSQL
+
+
+-- Clone it from the Github by copying the cloning link and entering it into command line with command 'git clone *link*'.
+-- Navigate to the 'frontend' from the command line and enter 'npm install'.
+
 ## Task solving and time consumption
 
 I pretty much started off with creating services on the front end to just receieve the needed data.
