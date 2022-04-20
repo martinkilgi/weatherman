@@ -5,6 +5,7 @@
 
     <div class="instructions">
         <h2>Please insert latitude and longitude or choose a destination from a map to request forecast data!</h2>
+        <h3>If you have saved weather data, only then you can request it!</h3>
     </div>
 
     <div class="weatherform">
@@ -14,9 +15,7 @@
                     <label>Longitude</label>
                 </div>
                 <div class="inputs">
-                    <!-- <label>Latitude</label> -->
                     <input name="latitude" required formControlName="latitude" style="float:left">
-                    <!-- <label>Longitude</label> -->
                     <input name="longitude" required formControlName="longitude" style="float:right">
                 </div>
                 <div class="days">
@@ -32,19 +31,31 @@
                     <button class="button" type="submit">Request data</button>
                 </div>
         </form>
+        <div class="vl"></div>
+        <form [formGroup]="currWeatherForm" (ngSubmit)="onCurrWeatherFormSubmit()">
+           
+            <label for="country">Country</label>
+            <input name="country" required formControlName="country">
+            <label for="date">Date</label>
+            <label for="dateFormation">(yyyy-mm-dd)</label>
+            <input name="date" required formControlName="date">
+        
+
+            <button class="button" type="submit">Get saved forecast</button>
+        </form>
     </div>
 
     <div class="map">
         <app-map (coordinates)="setCoordinates($event)"></app-map>
     </div>
 
-    <div *ngIf="this.weatherDataList.date.length" class="colors">
+    <div *ngIf="this.weatherDataList.date.length || this.savedForecast.id != 0" class="colors">
         <span class="accuweather">AccuWeather</span>
         <div class="openweather">OpenWeather</div>
         <div class="weatherapi">WeatherApi</div>
     </div>
 
-    <table *ngIf="this.weatherDataList.date.length" class="table-container">
+    <table *ngIf="this.weatherDataList.date.length && this.savedForecast.id == 0" class="table-container">
         <thead>
             <tr>
                 <th>
@@ -61,6 +72,63 @@
         <tbody *ngFor="let weather of htmlWeather; let i = index">
             <tr>
                 <th rowspan="3">{{weather.date}}</th>
+                <td>{{weather.accuTemp}} °C</td>
+                <td>{{weather.accuPrec}}%</td>
+            </tr>
+            <tr>
+                <td>{{weather.openWthTemp}} °C</td>
+                <td>{{weather.openWthPrec}}%</td>
+            </tr>
+            <tr>
+                <td>{{weather.wthApiTemp}} °C</td>
+                <td>{{weather.wthApiPrec}}%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button *ngIf="htmlWeather.length && this.savedForecast.id == 0" class="button" (click)="saveCurrentWeatherData()">Save weather data</button>
+
+    <table *ngIf="this.savedForecast.id != 0" class="table-container">
+        <thead>
+            <tr>
+                <th>
+                    <h1>Date</h1>
+                </th>
+                <th>
+                    <h1>Temperature</h1>
+                </th>
+                <th>
+                    <h1>Precipitation probability</h1>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th rowspan="3">{{savedForecast.date}}</th>
+                <td>{{savedForecast.accuTemp}} °C</td>
+                <td>{{savedForecast.accuPrec}}%</td>
+            </tr>
+            <tr>
+                <td>{{savedForecast.openWthTemp}} °C</td>
+                <td>{{savedForecast.openWthPrec}}%</td>
+            </tr>
+            <tr>
+                <td>{{savedForecast.wthApiTemp}} °C</td>
+                <td>{{savedForecast.wthApiPrec}}%</td>
+            </tr>
+            <tr>
+                <th>Current</th>
+                <td>{{currWeather.temperature}} °C</td>
+                <td>{{currWeather.precipitation}}%</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<!-- <tbody *ngFor="let weather of htmlWeather; let i = index">
+            <tr>
+                <th rowspan="3">{{weather.date}}</th>
                 <td>{{weather.accuData.temp}} °C</td>
                 <td>{{weather.accuData.prec}}%</td>
             </tr>
@@ -72,9 +140,4 @@
                 <td>{{weather.wthApiData.temp}} °C</td>
                 <td>{{weather.wthApiData.prec}}%</td>
             </tr>
-        </tbody>
-    </table>
-
-    <button class="button" type="button" (click)="handleSave">Save weather data</button>
-</div>
-
+        </tbody> -->

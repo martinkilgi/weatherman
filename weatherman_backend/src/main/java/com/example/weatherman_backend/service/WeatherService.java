@@ -1,6 +1,7 @@
 package com.example.weatherman_backend.service;
 
 import com.example.weatherman_backend.model.Weather;
+import com.example.weatherman_backend.model.currWeathRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,4 +10,5 @@ import java.util.List;
 public interface WeatherService {
     List<Weather> getData();
     List<Weather> saveWeatherData(List<Weather> weather);
+    Weather getByCountryAndDate(String country, String date);
 }

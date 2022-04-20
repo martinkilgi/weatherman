@@ -1,9 +1,11 @@
 package com.example.weatherman_backend.controller;
 
 import com.example.weatherman_backend.model.Weather;
+import com.example.weatherman_backend.model.currWeathRequest;
 import com.example.weatherman_backend.service.WeatherService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,5 +26,12 @@ public class weatherController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/weather/save").toUriString());
 
         return ResponseEntity.created(uri).body(weatherService.saveWeatherData(weather));
+    }
+
+    @GetMapping("/weather/saved")
+    public ResponseEntity<Weather> getWeatherByCountryAndDate(@RequestParam String country, @RequestParam String date) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/weather/country").toUriString());
+
+        return ResponseEntity.created(uri).body(weatherService.getByCountryAndDate(country, date));
     }
 }

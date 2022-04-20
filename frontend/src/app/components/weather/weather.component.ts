@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AnyForUntypedForms, FormBuilder } from '@angular/forms';
+import { savedForecast } from 'src/app/models/savedForecast';
 import { weatherApi } from 'src/app/models/weatherApiModel';
 import { weatherData } from 'src/app/models/weatherData';
 import { WeatherDataService } from 'src/app/services/weather-data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-weather',
@@ -27,8 +29,19 @@ export class WeatherComponent implements OnInit {
   latitude: number = 0;
   longitude: number = 0;
 
-  weatherBe: any = {
+  country: String = "";
+  date: String = "";
+
+  currWeather: any = {
+    temperature: 0,
+    precipitation: 0
+  }
+
+  savedForecast: savedForecast = {
     date: "",
+    id: 0,
+    country: "",
+    region: "",
     accuTemp: 0,
     accuPrec: 0,
     openWthTemp: 0,
@@ -39,6 +52,8 @@ export class WeatherComponent implements OnInit {
 
   weatherDataList: weatherData = {
     date: [],
+    country: "",
+    region: "",
     accuData: {
       temp: [],
       prec: []
@@ -75,9 +90,15 @@ export class WeatherComponent implements OnInit {
     days: 0
   });
 
+  currWeatherForm = this.formBuilder.group({
+    country: "",
+    date: ""
+  });
+
   constructor(
     private formBuilder: FormBuilder,
-    private weatherService: WeatherDataService
+    private weatherService: WeatherDataService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -95,6 +116,8 @@ export class WeatherComponent implements OnInit {
       })
     });
 
+    console.log(this.savedForecast);
+
   }
 
   setCoordinates(value: any) {
@@ -105,16 +128,45 @@ export class WeatherComponent implements OnInit {
     this.weatherForm.get("longitude")?.reset();
   }
 
-  saveCurrentWeatherData = (dataList: any) => {
-    this.weatherService.saveWeatherData(dataList).subscribe(
+  saveCurrentWeatherData = () => {
+    console.log("test");
+    this.weatherService.saveWeatherData(this.htmlWeather).subscribe(
       data => {
         console.log(data);
       }
     )
   }
 
-  handleSave() {
-    this.saveCurrentWeatherData(this.htmlWeather);
+  getSavedForecast = (country: String, date: String) => {
+    this.weatherService.getSavedForecast(country, date).subscribe(
+      data => {
+        console.log(data);
+        this.savedForecast = data;
+
+        if (!data) {
+          this.showSuccess();
+        }
+
+        this.getCurrentWeatherData(this.savedForecast.region);
+      }
+    )
+  }
+
+  getCurrentWeatherData = (city: String) => {
+    this.weatherService.getCurrentWeatherData(city).subscribe(
+      data => {
+        console.log(data);
+
+        this.currWeather.temperature = data.current.temp_c;
+        if (data.current.precip_mm >= 1) {
+          this.currWeather.precipitation = 100;
+        } else if (data.current.precip_mm >= 0.5 && data.current.precip_mm < 1) {
+          this.currWeather.precipitation = 60;
+        } else {
+          this.currWeather.precipitation = 0;
+        }
+      }
+    )
   }
 
   getMeteorologiskData = (latitude: number, longitude: number, days: number) => {
@@ -122,17 +174,9 @@ export class WeatherComponent implements OnInit {
       data => {
         this.meteorologiskData = data;
 
-        //this.weatherApiForecasts.openWeather = this.meteorologiskData.daily;
-        console.log(this.meteorologiskData);
-
         for (let i = 0; i < days; i++) {
           this.weatherDataList.openWthData.prec.push(Math.round(this.meteorologiskData.daily[i].pop * 10000) / 100);
           this.weatherDataList.openWthData.temp.push(Math.round((this.meteorologiskData.daily[i].temp.day - 273.15) * 10) / 10);
-
-          this.weatherBe.openWthTemp = Math.round((this.meteorologiskData.daily[i].temp.day - 273.15) * 10) / 10
-          this.weatherBe.openWthPrec = Math.round(this.meteorologiskData.daily[i].pop * 10000) / 100;
-
-
         }
       }
     )
@@ -142,15 +186,11 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getWeatherApiData(latitude, longitude).subscribe(
       data => {
         this.weatherApiData = data;
-        //this.weatherApiForecasts.weatherApi = this.weatherApiData.forecast.forecastday;
 
         for (let i = 0; i < days; i++) {
           this.weatherDataList.date.push(this.weatherApiData.forecast.forecastday[i].date);
           this.weatherDataList.wthApiData.prec.push((this.weatherApiData.forecast.forecastday[i].day.daily_chance_of_rain + this.weatherApiData.forecast.forecastday[i].day.daily_chance_of_rain) / 2);
           this.weatherDataList.wthApiData.temp.push(this.weatherApiData.forecast.forecastday[i].day.avgtemp_c);
-
-          // this.weatherBe.date = this.weatherApiData.forecast.forecastday[i].date;
-          // this.weatherBe.wthApiTemp = 
         }
       }
     )
@@ -161,9 +201,8 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getLocationCode(latitude, longitude).subscribe(
       location => {
         this.location = location;
-        //this.locationCode = this.location.Key;
-
-        console.log(this.location.Key);
+        this.weatherDataList.country = this.location.Country.LocalizedName;
+        this.weatherDataList.region = this.location.AdministrativeArea.LocalizedName;
 
         this.getAccuWeatherData(this.latitude, this.longitude, this.location.Key, days);
       }
@@ -174,10 +213,6 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getAccuWeatherData(latitude, longitude, locationCode).subscribe(
       data => {
         this.accuWeatherData = data;
-        //this.weatherApiForecasts.accuWeather = this.accuWeatherData.DailyForecasts;
-        console.log(this.accuWeatherData);
-
-
         
         for (let i = 0; i < days; i++) {
           if (this.accuWeatherData.DailyForecasts[i].Day.PrecipitationProbability) {
@@ -191,6 +226,8 @@ export class WeatherComponent implements OnInit {
         for (let i = 0; i < days; i++) {
           this.weatherDataObj = {
             date: "",
+            country: "",
+            region: "",
             accuTemp: 0,
             accuPrec: 0,
             openWthTemp: 0,
@@ -199,6 +236,8 @@ export class WeatherComponent implements OnInit {
             wthApiPrec: 0
           };
           this.weatherDataObj.date = this.weatherDataList.date[i];
+          this.weatherDataObj.country = this.weatherDataList.country;
+          this.weatherDataObj.region = this.weatherDataList.region;
           this.weatherDataObj.accuTemp = this.weatherDataList.accuData.temp[i];
           this.weatherDataObj.accuPrec = this.weatherDataList.accuData.prec[i];
           this.weatherDataObj.openWthTemp = this.weatherDataList.openWthData.temp[i];
@@ -208,28 +247,28 @@ export class WeatherComponent implements OnInit {
 
           this.htmlWeather.push(this.weatherDataObj);
         }
-        
       }
     )
-      
   }
           
   onFormSubmit() {
     this.htmlWeather = [];
     this.weatherDataList = {
       date: [],
-    accuData: {
-      temp: [],
-      prec: []
-    },
-    openWthData: {
-      temp: [],
-      prec: []
-    },
-    wthApiData: {
-      temp: [],
-      prec: []
-    },
+      country: "",
+      region: "",
+      accuData: {
+        temp: [],
+        prec: []
+      },
+      openWthData: {
+        temp: [],
+        prec: []
+      },
+      wthApiData: {
+        temp: [],
+        prec: []
+      },
     };
     if (this.weatherForm.get('latitude')!.value != null && this.weatherForm.get('longitude')!.value != null) {
       this.latitude = this.weatherForm.get('latitude')!.value;
@@ -247,6 +286,21 @@ export class WeatherComponent implements OnInit {
     console.log(this.htmlWeather);
 
    
+  }
+
+  showSuccess() {
+    this.toastr.success('Hello world!', 'Toastr fun!');
+  }
+
+  onCurrWeatherFormSubmit() {
+    this.currWeather = {
+      temperature: 0,
+      precipitation: 0
+    }
+    this.country = this.currWeatherForm.get('country')!.value;
+    this.date = this.currWeatherForm.get('date')!.value;
+
+    this.getSavedForecast(this.country, this.date);
   }
 }
 

@@ -22,7 +22,8 @@ public class Weather {
     private Long id;
 
     private String date;
-
+    private String country;
+    private String region;
     private Float accuTemp;
     private Float accuPrec;
     private Float openWthTemp;

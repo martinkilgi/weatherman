@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { computeDecimalDigest } from '@angular/compiler/src/i18n/digest';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,17 @@ export class WeatherDataService {
     private http: HttpClient,
   ) { }
 
+  getSavedForecast(country: any, date: any): Observable<any> {
+    const url = "http://localhost:8080/api/weather/saved";
+    const data = this.http.get(url, {
+      params: {
+        country: country,
+        date: date
+      }
+    });
+    return data;
+  }
+
   saveWeatherData(weatherData: any): Observable<any> {
     const url = "http://localhost:8080/api/weather/save";
     const data = this.http.post<any>(url, weatherData);
@@ -21,8 +31,14 @@ export class WeatherDataService {
     return data;
   }
 
+  getCurrentWeatherData(city: String): Observable<any> {
+    const url = "http://api.weatherapi.com/v1/current.json?key=23d80afb25784be797e110409221304&q=" + city + "&aqi=no";
+    const data = this.http.get<any>(url);
+
+    return data;
+  }
+
   getMeteorologiskData(lat: number, lon: number): Observable<any> {
-    //const url = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=" + lat + "&lon=" + lon;
     const url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&appid=0827dbe14786d005d4c920ab375b9306"
     const data = this.http.get(url);
     return data;
