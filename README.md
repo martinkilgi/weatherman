@@ -8,7 +8,7 @@ You will need:
   * PostgreSQL
 
 
-1. Clone it from the Github by copying the cloning link and entering it into command line with command ```git clone *link*```.
+1. Clone it from the Github by copying the cloning link and entering it into command line with command ```git clone https://github.com/martinkilgi/weatherman.git```.
 2. Navigate to the 'frontend' from the command line and enter ```npm install```.
 
 ## Task solving and time consumption
