@@ -21,10 +21,14 @@ necessary endpoints, repositories, models etc...
 After I got ready with that, I just started to add other needed parts like a map and data saving function.
 Finally I just tested that the whole created system was working as expected and did some little finishing touches.
 
+In some places I had to improvise. For example I made it so that the user can only choose between one to three days to get forecasts about because
+one's API free version only returns forecast for the 3 next days. Also since the precipitation info varies (one API returns it in millimeters, one returns boolean
+if it rains or not and one return precipitation chance in percents) I made correctures about this in some places too.
+
 Below is a list of activites with rough time estimates
-  * Design 4h
-  * Front-end functionality 5h
-  * Back-end functionality 3h
+  * Design 6h
+  * Front-end functionality 8h
+  * Back-end functionality 4h
 
 ## Implement/Skip
 
