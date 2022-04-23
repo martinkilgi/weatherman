@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, Output, EventEmitter } from '@angular/core';
-import { AnyForUntypedForms } from '@angular/forms';
 import * as L from 'leaflet';
 
 @Component({
@@ -45,8 +44,6 @@ export class MapComponent implements AfterViewInit {
       }
 
       this.sendCoordinates(coordinates);
-
-      console.log('You clicked the map at latitude: ' + lat + ' and longitude: ' + lng);
 
       if(typeof(this.newMarker)==='undefined') {
         this.newMarker = L.marker(e.latlng,{ draggable: true});

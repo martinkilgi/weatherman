@@ -8,9 +8,7 @@ export class weatherData {
         public accuData: tempAndPrec,
         public openWthData: tempAndPrec,
         public wthApiData: tempAndPrec,
-        //public temperatures: Array<any>,
-        //public precipitations: Array<any>
     ) {
-
+        
     }
 }

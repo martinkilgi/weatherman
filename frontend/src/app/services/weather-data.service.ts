@@ -27,14 +27,12 @@ export class WeatherDataService {
   saveWeatherData(weatherData: any): Observable<any> {
     const url = "http://localhost:8080/api/weather/save";
     const data = this.http.post<any>(url, weatherData);
-
     return data;
   }
 
   getCurrentWeatherData(city: String): Observable<any> {
     const url = "http://api.weatherapi.com/v1/current.json?key=23d80afb25784be797e110409221304&q=" + city + "&aqi=no";
     const data = this.http.get<any>(url);
-
     return data;
   }
 

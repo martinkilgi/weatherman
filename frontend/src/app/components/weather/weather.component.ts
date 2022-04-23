@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AnyForUntypedForms, FormBuilder } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { savedForecast } from 'src/app/models/savedForecast';
-import { weatherApi } from 'src/app/models/weatherApiModel';
 import { weatherData } from 'src/app/models/weatherData';
 import { WeatherDataService } from 'src/app/services/weather-data.service';
 import { ToastrService } from 'ngx-toastr';
+import { weatherObject } from 'src/app/models/weatherObject';
+import { currentWeather } from 'src/app/models/currentWeather';
 
 @Component({
   selector: 'app-weather',
@@ -13,18 +14,31 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class WeatherComponent implements OnInit {
 
-  weatherData: any;
-  meteorologiskData: any;
+  weatherTable!: ElementRef;
+  savedData!: ElementRef;
+
+ @ViewChild('weatherTable', { static: false }) set content(content: ElementRef) {
+    if(content) {
+      this.weatherTable = content;
+      this.scroll(content.nativeElement);
+    }
+ }
+
+ @ViewChild('savedData', { static: false }) set data(data: ElementRef) {
+    if(data) {
+      this.savedData = data;
+      this.scroll(data.nativeElement);
+    }
+ }
+
+  openWthData: any;
   weatherApiData: any;
   accuWeatherData: any;
   location: any;
-  htmlWeather: Array<any> = [];
+  htmlWeather: Array<weatherObject> = [];
 
   ol: any;
   map: any;
-
-  defaultLat: number = 58.990459;
-  defaultLon: number = 25.574680;
 
   latitude: number = 0;
   longitude: number = 0;
@@ -32,7 +46,7 @@ export class WeatherComponent implements OnInit {
   country: String = "";
   date: String = "";
 
-  currWeather: any = {
+  currWeather: currentWeather = {
     temperature: 0,
     precipitation: 0
   }
@@ -68,20 +82,16 @@ export class WeatherComponent implements OnInit {
     },
   }
 
-  weatherDataObj: any = {
-    date: [],
-    accuData: {
-      temp: 0,
-      prec: 0
-    },
-    openWthData: {
-      temp: 0,
-      prec: 0
-    },
-    wthApiData: {
-      temp: 0,
-      prec: 0
-    },
+  weatherDataObj: weatherObject = {
+    date: "",
+    country: "",
+    region: "",
+    accuTemp: 0,
+    accuPrec: 0,
+    openWthTemp: 0,
+    openWthPrec: 0,
+    wthApiTemp: 0,
+    wthApiPrec: 0
   };
 
   weatherForm = this.formBuilder.group({
@@ -115,9 +125,6 @@ export class WeatherComponent implements OnInit {
         zoom: 8
       })
     });
-
-    console.log(this.savedForecast);
-
   }
 
   setCoordinates(value: any) {
@@ -129,10 +136,11 @@ export class WeatherComponent implements OnInit {
   }
 
   saveCurrentWeatherData = () => {
-    console.log("test");
     this.weatherService.saveWeatherData(this.htmlWeather).subscribe(
       data => {
-        console.log(data);
+        if (data) {
+          this.toastr.success("Your forecasts have been saved!", "Saved!");
+        }
       }
     )
   }
@@ -140,12 +148,7 @@ export class WeatherComponent implements OnInit {
   getSavedForecast = (country: String, date: String) => {
     this.weatherService.getSavedForecast(country, date).subscribe(
       data => {
-        console.log(data);
         this.savedForecast = data;
-
-        if (!data) {
-          this.showSuccess();
-        }
 
         this.getCurrentWeatherData(this.savedForecast.region);
       }
@@ -155,8 +158,6 @@ export class WeatherComponent implements OnInit {
   getCurrentWeatherData = (city: String) => {
     this.weatherService.getCurrentWeatherData(city).subscribe(
       data => {
-        console.log(data);
-
         this.currWeather.temperature = data.current.temp_c;
         if (data.current.precip_mm >= 1) {
           this.currWeather.precipitation = 100;
@@ -172,11 +173,11 @@ export class WeatherComponent implements OnInit {
   getMeteorologiskData = (latitude: number, longitude: number, days: number) => {
     this.weatherService.getMeteorologiskData(latitude, longitude).subscribe(
       data => {
-        this.meteorologiskData = data;
+        this.openWthData = data;
 
         for (let i = 0; i < days; i++) {
-          this.weatherDataList.openWthData.prec.push(Math.round(this.meteorologiskData.daily[i].pop * 10000) / 100);
-          this.weatherDataList.openWthData.temp.push(Math.round((this.meteorologiskData.daily[i].temp.day - 273.15) * 10) / 10);
+          this.weatherDataList.openWthData.prec.push(Math.round(this.openWthData.daily[i].pop * 10000) / 100);
+          this.weatherDataList.openWthData.temp.push(Math.round((this.openWthData.daily[i].temp.day - 273.15) * 10) / 10);
         }
       }
     )
@@ -186,6 +187,9 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getWeatherApiData(latitude, longitude).subscribe(
       data => {
         this.weatherApiData = data;
+
+        this.weatherDataList.country = this.weatherApiData.location.country;
+        this.weatherDataList.region = this.weatherApiData.location.name;
 
         for (let i = 0; i < days; i++) {
           this.weatherDataList.date.push(this.weatherApiData.forecast.forecastday[i].date);
@@ -201,8 +205,6 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getLocationCode(latitude, longitude).subscribe(
       location => {
         this.location = location;
-        this.weatherDataList.country = this.location.Country.LocalizedName;
-        this.weatherDataList.region = this.location.AdministrativeArea.LocalizedName;
 
         this.getAccuWeatherData(this.latitude, this.longitude, this.location.Key, days);
       }
@@ -275,21 +277,16 @@ export class WeatherComponent implements OnInit {
       this.longitude = this.weatherForm.get('longitude')!.value;
     }
     let daysCount = this.weatherForm.get('days')!.value;
-    console.log(daysCount);
     if (daysCount == null || daysCount == 0) {
       daysCount = 3;
     }
     this.getMeteorologiskData(this.latitude, this.longitude, daysCount);
     this.getWeatherApiData(this.latitude, this.longitude, daysCount);
     this.getLocationCode(this.latitude, this.longitude, daysCount);
-
-    console.log(this.htmlWeather);
-
-   
   }
 
-  showSuccess() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
+  scroll(el: any) {
+    el.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
   }
 
   onCurrWeatherFormSubmit() {
@@ -303,29 +300,3 @@ export class WeatherComponent implements OnInit {
     this.getSavedForecast(this.country, this.date);
   }
 }
-
-
-// this.weatherDataObj = {
-//             date: [],
-//             accuData: {
-//               temp: 0,
-//               prec: 0
-//             },
-//             openWthData: {
-//               temp: 0,
-//               prec: 0
-//             },
-//             wthApiData: {
-//               temp: 0,
-//               prec: 0
-//             },
-//           };
-//           this.weatherDataObj.date.push(this.weatherDataList.date[i]);
-//           this.weatherDataObj.accuData.temp = this.weatherDataList.accuData.temp[i];
-//           this.weatherDataObj.accuData.prec= this.weatherDataList.accuData.prec[i];
-//           this.weatherDataObj.openWthData.temp = this.weatherDataList.openWthData.temp[i];
-//           this.weatherDataObj.openWthData.prec= this.weatherDataList.openWthData.prec[i];
-//           this.weatherDataObj.wthApiData.temp= this.weatherDataList.wthApiData.temp[i];
-//           this.weatherDataObj.wthApiData.prec= this.weatherDataList.wthApiData.prec[i];
-
-//           this.htmlWeather.push(this.weatherDataObj);

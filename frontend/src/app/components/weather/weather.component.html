@@ -86,7 +86,7 @@
         </tbody>
     </table>
 
-    <button *ngIf="htmlWeather.length && this.savedForecast.id == 0" class="button" (click)="saveCurrentWeatherData()">Save weather data</button>
+    <button #weatherTable *ngIf="htmlWeather.length && this.savedForecast.id == 0" class="button" (click)="saveCurrentWeatherData()">Save weather data</button>
 
     <table *ngIf="this.savedForecast.id != 0" class="table-container">
         <thead>
@@ -124,20 +124,6 @@
         </tbody>
     </table>
 
-</div>
+    <div #savedData *ngIf="this.savedForecast.id != 0"></div>
 
-<!-- <tbody *ngFor="let weather of htmlWeather; let i = index">
-            <tr>
-                <th rowspan="3">{{weather.date}}</th>
-                <td>{{weather.accuData.temp}} °C</td>
-                <td>{{weather.accuData.prec}}%</td>
-            </tr>
-            <tr>
-                <td>{{weather.openWthData.temp}} °C</td>
-                <td>{{weather.openWthData.prec}}%</td>
-            </tr>
-            <tr>
-                <td>{{weather.wthApiData.temp}} °C</td>
-                <td>{{weather.wthApiData.prec}}%</td>
-            </tr>
-        </tbody> -->
+</div>
