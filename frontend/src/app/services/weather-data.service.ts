@@ -36,7 +36,7 @@ export class WeatherDataService {
     return data;
   }
 
-  getMeteorologiskData(lat: number, lon: number): Observable<any> {
+  getOpenWthData(lat: number, lon: number): Observable<any> {
     const url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&appid=0827dbe14786d005d4c920ab375b9306"
     const data = this.http.get(url);
     return data;

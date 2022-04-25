@@ -55,6 +55,10 @@
         <div class="weatherapi">WeatherApi</div>
     </div>
 
+    <div *ngIf="this.savedForecast.id == 0" class="location">
+        <h1>{{this.weatherDataList.country}}, {{this.weatherDataList.region}}</h1>
+    </div>
+
     <table *ngIf="this.weatherDataList.date.length && this.savedForecast.id == 0" class="table-container">
         <thead>
             <tr>

@@ -149,7 +149,8 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getSavedForecast(country, date).subscribe(
       data => {
         this.savedForecast = data;
-
+        console.log(data);
+        console.log(this.savedForecast.id);
         this.getCurrentWeatherData(this.savedForecast.region);
       }
     )
@@ -170,8 +171,8 @@ export class WeatherComponent implements OnInit {
     )
   }
 
-  getMeteorologiskData = (latitude: number, longitude: number, days: number) => {
-    this.weatherService.getMeteorologiskData(latitude, longitude).subscribe(
+  getOpenWthData = (latitude: number, longitude: number, days: number) => {
+    this.weatherService.getOpenWthData(latitude, longitude).subscribe(
       data => {
         this.openWthData = data;
 
@@ -187,6 +188,7 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getWeatherApiData(latitude, longitude).subscribe(
       data => {
         this.weatherApiData = data;
+        console.log(data);
 
         this.weatherDataList.country = this.weatherApiData.location.country;
         this.weatherDataList.region = this.weatherApiData.location.name;
@@ -255,6 +257,18 @@ export class WeatherComponent implements OnInit {
           
   onFormSubmit() {
     this.htmlWeather = [];
+    this.savedForecast = {
+      date: "",
+      id: 0,
+      country: "",
+      region: "",
+      accuTemp: 0,
+      accuPrec: 0,
+      openWthTemp: 0,
+      openWthPrec: 0,
+      wthApiTemp: 0,
+      wthApiPrec: 0
+    }
     this.weatherDataList = {
       date: [],
       country: "",
@@ -280,7 +294,7 @@ export class WeatherComponent implements OnInit {
     if (daysCount == null || daysCount == 0) {
       daysCount = 3;
     }
-    this.getMeteorologiskData(this.latitude, this.longitude, daysCount);
+    this.getOpenWthData(this.latitude, this.longitude, daysCount);
     this.getWeatherApiData(this.latitude, this.longitude, daysCount);
     this.getLocationCode(this.latitude, this.longitude, daysCount);
   }
