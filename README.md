@@ -15,11 +15,12 @@ You will need:
 3. Start PostgreSQL server (if it's not running yet), open PgAdmin and log in with the credentials you set during installation.
 4. Under 'Databases' create a new database named "weatherman"
 5. Open 'weatherman_backend' in IntelliJ Idea
-6. Click on 'Database' on the ribbon on the right side to connect the backend to the database.
-7. Click on '+' sign -> 'Data Source' -> 'PostgreSQL' and insert your database name, user and password. After that, test connection with the button in the left bottom.
-8. Open file named 'application.properties' in 'Resources' folder and configure it according to your database.
-9. Start backend service by clicking on the green arrow (or Shift+F10) on the top ribbon.
-10. Being in a 'frontend' folder, type ```ng serve --open``` for the front end to start.
+6. Make sure the database is active (connected).
+7. Click on 'Database' on the ribbon on the right side to connect the backend to the database.
+8. Click on '+' sign -> 'Data Source' -> 'PostgreSQL' and insert your database name, user and password. After that, test connection with the button in the left bottom.
+9. Open file named 'application.properties' in 'Resources' folder and configure it according to your database.
+10. Start backend service by clicking on the green arrow (or Shift+F10) on the top ribbon.
+11. Being in a 'frontend' folder, type ```ng serve --open``` for the front end to start.
 
 ## Task solving and time consumption
 
