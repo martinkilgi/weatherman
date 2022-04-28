@@ -13,14 +13,18 @@ You will need:
 1. Clone it from the Github by copying the cloning link and entering it into command line with command ```git clone https://github.com/martinkilgi/weatherman.git```.
 2. Navigate to the 'frontend' from the command line and enter ```npm install```.
 3. Start PostgreSQL server (if it's not running yet), open PgAdmin and log in with the credentials you set during installation.
-4. Under 'Databases' create a new database named "weatherman"
-5. Open 'weatherman_backend' in IntelliJ Idea
-6. Make sure the database is active (connected).
-7. Click on 'Database' on the ribbon on the right side to connect the backend to the database.
-8. Click on '+' sign -> 'Data Source' -> 'PostgreSQL' and insert your database name, user and password. After that, test connection with the button in the left bottom.
-9. Open file named 'application.properties' in 'Resources' folder and configure it according to your database.
-10. Start backend service by clicking on the green arrow (or Shift+F10) on the top ribbon.
-11. Being in a 'frontend' folder, type ```ng serve --open``` for the front end to start.
+     * Windows key + R
+     * Type ```services.msc```
+     * Find your Postgres service based on your installed version
+     * Start it if it's not running
+5. Under 'Databases' create a new database named "weatherman" and click on it to make it active.
+6. Open 'weatherman_backend' in IntelliJ Idea.
+7. Make sure the database is active (connected).
+8. Click on 'Database' on the ribbon on the right side to connect the backend to the database.
+9. Click on '+' sign -> 'Data Source' -> 'PostgreSQL' and insert your database name, user and password. After that, test connection with the button in the left bottom.
+10. If needed, open file named 'application.properties' in 'Resources' folder and configure it according to your database.
+11. Start backend service by clicking on the green arrow (or Shift+F10) on the top ribbon.
+12. Being in a 'frontend' folder, type ```ng serve --open``` for the front end to start.
 
 ## Task solving and time consumption
 
@@ -41,8 +45,8 @@ finds the data matching those parameters and returns forecast info about the reg
 
 Below is a list of activites with very rough time estimates
   * Design 6h
-  * Front-end functionality 8h
-  * Back-end functionality 6h
+  * Front-end functionality 9h
+  * Back-end functionality 7h
 
 ## Implement/Skip
 
