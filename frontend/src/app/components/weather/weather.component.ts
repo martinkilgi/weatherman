@@ -149,8 +149,6 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getSavedForecast(country, date).subscribe(
       data => {
         this.savedForecast = data;
-        console.log(data);
-        console.log(this.savedForecast.id);
         this.getCurrentWeatherData(this.savedForecast.region);
       }
     )
@@ -188,7 +186,6 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getWeatherApiData(latitude, longitude).subscribe(
       data => {
         this.weatherApiData = data;
-        console.log(data);
 
         this.weatherDataList.country = this.weatherApiData.location.country;
         this.weatherDataList.region = this.weatherApiData.location.name;
@@ -299,7 +296,7 @@ export class WeatherComponent implements OnInit {
     this.getLocationCode(this.latitude, this.longitude, daysCount);
   }
 
-  scroll(el: any) {
+  scroll(el: HTMLElement) {
     el.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
   }
 

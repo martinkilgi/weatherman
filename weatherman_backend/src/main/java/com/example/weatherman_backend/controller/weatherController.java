@@ -1,7 +1,6 @@
 package com.example.weatherman_backend.controller;
 
 import com.example.weatherman_backend.model.Weather;
-import com.example.weatherman_backend.model.currWeathRequest;
 import com.example.weatherman_backend.service.WeatherService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;

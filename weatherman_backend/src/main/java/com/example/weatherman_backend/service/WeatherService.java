@@ -1,7 +1,6 @@
 package com.example.weatherman_backend.service;
 
 import com.example.weatherman_backend.model.Weather;
-import com.example.weatherman_backend.model.currWeathRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
