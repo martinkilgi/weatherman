@@ -7,6 +7,7 @@ Application to compare specific location weather data from different sources.
 ## Setup instructions
 
 You will need:
+  * Node.js installed
   * PostgreSQL (Server and preferrably PgAdmin)
   * IntelliJ Idea Ultimate
   * VS Code or your preferred IDE
